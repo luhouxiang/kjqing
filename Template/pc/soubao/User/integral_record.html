@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
+    <meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
+    <link rel="stylesheet" href="__STATIC__/css/edit_address.css" type="text/css">
+    <script src="__PUBLIC__/js/jquery-1.10.2.min.js"></script>
+    <script src="__STATIC__/js/slider.js"></script>
+	<script src="__PUBLIC__/js/layer/layer-min.js"></script><!--弹窗js 参考文档 http://layer.layui.com/-->
+</head>
+<style type="text/css">
+.ui_panel {
+    padding: 25px 0px;
+}
+ul, ol {
+    list-style: none;
+}
+.return_goods {
+    border: solid 1px #ddd;
+    background-color: #eeeeee;
+    height: 38px;
+    line-height: 38px;
+    position: relative;
+    z-index: 1;
+    margin-top: 5px;
+}
+.return_goods {
+    border: 0 !important;
+    border-bottom: 1px solid #dedede !important;
+}
+.l_ulj {
+    overflow: hidden;
+}
+.return_goods {
+    margin-top: 5px;
+}
+.return_goods li {
+    float: left;
+}
+
+.return_goods li span {
+    display: block;
+    text-align: center;
+}
+.return_goods li span.title_first {
+    width: 200px;
+}
+.return_goods li span.title_second {
+    width: 200px 
+}
+.return_goods li span.title_thired {
+    width: 200px;
+}
+.return_goods li span.title_four {
+    width: 200px;
+}
+</style>
+<body>
+<div class="ui_tab">         
+	<div class="ui_tab_content J_order_list">
+		<div style="display: block;" class="ui_panel">
+            <div class="return_goods clearfix l_ulj">
+              <ul class="l_ulj">
+                <li> <span class="title_first">序号</span> </li>
+                <li> <span class="title_second">用户名</span> </li>
+                <li> <span class="title_thired">兑换积分</span> </li>
+                <li> <span class="title_four">加入时间</span> </li>                
+              </ul>
+            </div>
+        </div> 
+        <volist name="queue_lst" id="v" key="k">
+           <div class="return_goods clearfix" style=" background-color:inherit">
+                 <ul class="l_ulj">
+                   <li> <span class="title_first">{$k}</span></li>
+                   <li> <span class="title_second">{$v['nickname']}</span> </li>
+                   <li> <span class="title_thired"> {$v['receive_amount']}  </li>
+                   <li> <span class="title_four">{$v['receive_time']|date='Y-m-d',###}</span> </li>
+                 </ul>
+           </div>
+        </volist>          
+        <div class="operating fixed" id="bottom">
+           <div class="fn_page clearfix" style="margin-top:10px">
+                       {$page} 
+           </div>
+        </div>    
+	</div>
+</div>
+<script src="__PUBLIC__/js/global.js"></script>
+<script src="__PUBLIC__/js/pc_common.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<include file="Public/header"/>
+<body>      
+<div id="tbh5v0">
+<div class="user_com">
+   <header>
+  <div class="tab_nav">
+    <div class="header">
+      <div class="h-left"><a class="sb-back" href="javascript:history.back(-1)" title="返回"></a></div>
+      <div class="h-mid">积分兑换</div>
+      <div class="h-right">
+        <aside class="top_bar">
+          <div onClick="show_menu();$('#close_btn').addClass('hid');" id="show_more"><a href="javascript:;"></a> </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</header>
+    <ul class="il_title">
+	    <li>
+	        <p class="cf22" id="all_score">{$user[pay_points]}</p>
+	        <p><a href="javascript:void(0)" >可用积分</a></p>
+	    </li>
+	   
+	</ul>
+	<div id="dialog-confirm" style="text-align:center;position: relative;overflow:hidden;vertical-align:middle;margin:0 auto;" title="兑换股票"  >
+		<p class="tx_cash">
+			当前100积分兑换：{$stock}莱特股
+		</p>
+		<p class="tx_cash"><span>请输入需要兑换积分：</span>
+			<input type="text" id="pay_points" value="0" style="width:130px;" min="10" placeholder="最少兑换额度100"
+				onpaste="this.value=this.value.replace(/[^\d.]/g,'')" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')" >
+        <p class="tx_cash"><span>手机验证码：</span>
+        	<input type="text" id="mobile_code" name="mobile_code" style="width:130px;"   placeholder="手机验证码"/>
+        	<input id="zphone" type="button" value="获取手机验证码 " onClick="sendcode(this)" class="dotm_btn1 beett" style="width:20%;line-height: 31px;margin-left: -125px;" />
+        </p>
+		<input type="button" value="确认" onclick="addStock();" class="dotm_btn1 beett" style="width:40%" />
+		<input type="button" value="取消" onclick="window.history.back();" class="dotm_btn1 beett" style="width:40%" />
+	</div>
+<script>
+function addStock(){
+	
+	var pay_points = $("#pay_points").val();
+	if(pay_points < 100){
+		layer.open({content: "每次兑换不能少于100分",time: 1});
+		return false;
+	}
+	var mobile_code = $("#mobile_code").val();
+	if(mobile_code == ""){
+		layer.open({content: "请输入短信验证码",time: 1});
+		return false;
+	}
+	
+	$.ajax({
+		type : "get",
+		url:"/index.php?m=Mobile&c=Distribut&a=addStock&pay_points="+$("#pay_points").val()+"&mobile_code="+$("#mobile_code").val(),
+		dataType:'json',
+		success:function(result)
+		{
+			var res = $.parseJSON(result);
+			if(res.status == "error")
+				layer.open({content: res.msg,time: 1});
+			else
+				window.location.href="{:U('Distribut/queryStock')}";
+		}
+	});
+}
+
+function sendcode(o){
+	var mobile = "{$user["mobile"]}";
+	if(mobile == ""){
+		layer.open({content: "请录入手机号码",time: 1});
+	}
+	$.ajax({
+		url:'/index.php?m=Mobile&c=User&a=send_validate_code&t='+Math.random()+'&mobile='+mobile,
+		type:'post',
+		dataType:'json',
+		data:{type:$(o).attr('rel'),send:mobile},
+		success:function(res){
+			if(res.status==1){
+				countdown(o);
+			}else{
+				layer.open({content:res.msg,time:2});
+			}
+		}
+	})
+}
+
+var wait = 60;
+function countdown(obj, msg) {
+	obj = $(obj);
+	if (wait == 0) {
+		obj.removeAttr("disabled");
+		obj.val(msg);
+		wait = 60;
+	} else {
+		if (msg == undefined || msg == null) {
+			msg = obj.val();
+		}
+		obj.attr("disabled", "disabled");
+		obj.val(wait + "秒后重新获取");
+		wait--;
+		setTimeout(function() {
+			countdown(obj, msg)
+		}, 1000)
+	}
+}
+</script>
+</div>
+<include file="Public/footer"/>
+</div>
+<include file="Public/footer_nav"/>
+</body>
+
+</html>

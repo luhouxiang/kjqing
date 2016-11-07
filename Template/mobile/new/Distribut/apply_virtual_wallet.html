@@ -1,0 +1,200 @@
+<include file="Public/header"/>
+<body>      
+<div id="tbh5v0">
+<div class="user_com">
+
+<header>
+  <div class="tab_nav">
+    <div class="header">
+      <div class="h-left"><a class="sb-back" href="javascript:history.back(-1)" title="返回"></a></div>
+      <div class="h-mid">我兑换的股票提现</div>
+      <div class="h-right">
+        <aside class="top_bar">
+          <div onClick="show_menu();$('#close_btn').addClass('hid');" id="show_more"><a href="javascript:;"></a> </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="endorse_hend">
+	<p>提现信息</p>
+</div>
+
+<div class="Wallet">
+	<div class="cash_num bb1">
+        <form action="" method="post" enctype="multipart/form-data" name="distribut_form" id="distribut_form">
+            <p class="tx_cash"><span>股票提现额：</span><input type="text" id="money" name="money" placeholder="提取莱特股的数量" onpaste="this.value=this.value.replace(/[^\d.]/g,'')" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')"/></p>
+            <p class="tx_cash"><span>钱包地址：</span><input type="text" id="wallet_addr" name="wallet_addr" placeholder="PC钱包客户端生成的钱包地址"/></p>
+            <p class="tx_cash"><span>验证码：</span>
+            <input type="text" name="mobile_code" id="mobile_code" placeholder="手机验证码" style="width:200px;" />
+            <input id="zphone" type="button" value="获取手机验证码 " onClick="sendcode(this)" class="dotm_btn1 beett" 
+            	style="width:23%;line-height: 0px;margin-left: -50px;height: 30px;" />
+            <!-- <a id="cash_submit" href="javascript:void(0);" style="padding: 6px 15px;margin-left: -45px;" onClick="sendcode(this);">获取手机验证码</a> -->
+            </p>
+            <p><a id="cash_submit" href="javascript:void(0);" onClick="checkSubmit();">确定提交</a></p>
+		</form>        
+	</div>
+
+	<div class="cash_num">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" id="ajax_return">
+           <tr>
+				<th>编号</th>
+				<th>申请日期</th>                
+				<th>股票提现额</th>
+				<th>状态</th>
+			</tr> 
+           <foreach name="list" item="v" key="k" > 
+            <tr>
+                <td>{$k+1}</td>
+                <td>{$v['create_time']|date="Y-m-d",###}</td>
+                <td>{$v['money']}</td>
+                <td>
+                    <if condition="$v[status] eq 0">申请中</if>
+                    <if condition="$v[status] eq 1">申请成功</if>
+                    <if condition="$v[status] eq 2">申请失败</if>                   
+                </td>
+            </tr>
+            </foreach>                                    
+		</table>
+	    <notempty name="list">
+	          <p style="text-align: center;" id="getmore"><a href="javascript:void(0)" onClick="ajax_sourch_submit()">点击加载更多</a></p>        
+        </notempty>            
+	</div>
+</div>
+
+<script>
+
+//表单验证提交
+function checkSubmit(){
+	var money = $.trim($('#money').val());
+	var wallet_addr = $.trim($('#wallet_addr').val());
+	var mobile_code = $.trim($('#mobile_code').val());
+	
+	if(money == '')
+	{
+		alert('提现金额必填');
+		return false;
+	}
+			
+	if(wallet_addr == '')
+	{
+		alert('钱包地址必填');
+		return false;
+	}
+	if(mobile_code == '')
+	{
+		alert('验证码必填');
+		return false;
+	}
+	$('#distribut_form').submit();
+}
+
+function addStock(){
+	$.ajax({
+		type : "get",
+		url:"/index.php?m=Mobile&c=Distribut&a=addStock&pay_points=100",
+		dataType:'html',
+		success: function(data)
+		{
+			var result = $.parseJSON(data);
+			//console.log(result.usl_lst);
+			alert("成功！");
+		}
+	});
+}
+var page = 1;
+function ajax_sourch_submit()
+{	 	 	 
+       page += 1;
+		$.ajax({
+			type : "GET",
+			url:"/index.php?m=Mobile&c=Distribut&a=queryStock&is_ajax=1&p="+page,//+tab,						
+//			url:"{:U('Mobile/User/points',null,'')}/is_ajax/1/p/"+page,//+tab,
+//			data : $('#filter_form').serialize(),// 你的formid 搜索表单 序列化提交
+			success: function(data)
+			{
+				console.log(data);
+				 if($.trim(data.usl_lst) == ''){
+					$('#getmore').hide();
+				 }else{
+					 for(var i=0;i<data.usl_lst.length;i++){
+						 var usl = data.usl_lst[i];
+						 var date = new Date(parseInt(usl.add_time)*1000);
+					 	$("#ajax_return").append("<tr><td>"+date.format("yyyy-MM-dd")+"</td><td>"+usl.pay_points+"</td><td>"+usl.stock_amount+"</td></tr>");
+					 }
+				 }
+			}
+		}); 
+} 
+
+Date.prototype.format = function(format) {
+    var date = {
+           "M+": this.getMonth() + 1,
+           "d+": this.getDate(),
+           "h+": this.getHours(),
+           "m+": this.getMinutes(),
+           "s+": this.getSeconds(),
+           "q+": Math.floor((this.getMonth() + 3) / 3),
+           "S+": this.getMilliseconds()
+    };
+    if (/(y+)/i.test(format)) {
+           format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+    }
+    for (var k in date) {
+           if (new RegExp("(" + k + ")").test(format)) {
+                  format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                         ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+           }
+    }
+    return format;
+}
+
+function sendcode(o){
+	var mobile = "{$user["mobile"]}";
+	if(mobile == ""){
+		layer.open({content: "请录入手机号码",time: 1});
+	}
+	$.ajax({
+		url:'/index.php?m=Mobile&c=User&a=send_validate_code&t='+Math.random(),
+		type:'post',
+		dataType:'json',
+		data:{type:$(o).attr('rel'),send:mobile},
+		success:function(res){
+			if(res.status==1){
+				countdown(o);
+			}else{
+				layer.open({content:res.msg,time:2});
+			}
+		}
+	})
+}
+
+var wait = 60;
+function countdown(obj, msg) {
+	obj = $(obj);
+	if (wait == 0) {
+		obj.removeAttr("disabled");
+		obj.val(msg);
+		wait = 60;
+	} else {
+		if (msg == undefined || msg == null) {
+			msg = obj.val();
+		}
+		obj.attr("disabled", "disabled");
+		obj.val(wait + "秒后重新获取");
+		wait--;
+		setTimeout(function() {
+			countdown(obj, msg)
+		}, 1000)
+	}
+}
+
+</script>
+</div>
+<include file="Public/footer"/>
+</div>
+<include file="Public/footer_nav"/>
+</body>
+
+</html>

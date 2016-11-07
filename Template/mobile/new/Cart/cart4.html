@@ -1,0 +1,240 @@
+<!DOCTYPE html >
+<html>
+<head>
+<meta name="Generator" content="tpshop" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>购物流程-{$tpshop_config['shop_info_store_title']}</title>
+<meta http-equiv="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
+<meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+<link rel="stylesheet" href="__STATIC__/css/public.css">
+<link rel="stylesheet" href="__STATIC__/css/flow.css">
+<link rel="stylesheet" href="__STATIC__/css/style_jm.css">
+<script type="text/javascript" src="__STATIC__/js/jquery.js"></script>
+<script type="text/javascript" src="__STATIC__/js/clipboard.js"></script>
+<script type="text/javascript" src="__STATIC__/js/layer.js" ></script>
+</head>
+<body style="background: rgb(235, 236, 237);position:relative;">
+<div class="tab_nav">
+    <div class="header">
+      <div class="h-left">
+        <a class="sb-back" href="javascript:history.back(-1)" title="返回"></a>
+      </div>
+      <div class="h-mid"> 提交订单      </div>
+    </div>
+</div>
+
+<div class="screen-wrap fullscreen login">
+<form action="{:U('Mobile/Payment/getCode')}" method="post" name="cart4_form" id="cart4_form">
+<div class="content_success " >
+    <div class="con-ct   fo-con">
+        <h4 class="successtijiao">订单已经提交成功！</h4>
+      <ul class="ct-list">
+        <li>请您在<span>{$pay_date}</span>前完成支付，否则订单将自动取消！：</li>
+        <li >订单号：<em>{$order['order_sn']}</em></li>  
+        <li>支付金额：<em>￥{$order['order_amount']}元</em></li>         
+      </ul>
+    </div>
+    
+   <section class="order-info">
+          <div class="order-list">
+            <div class="content ptop0">
+              <div class="panel panel-default info-box">
+                <div class="panel-body" id="pay_div"  >
+                  
+                  <!-- <if condition="strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')" >
+                  	<div class="title" id="zhifutitle" style="border-bottom:1px solid #eeeeee;font-size:13px;">
+	                  <span class="i-icon-arrow-down i-icon-arrow-up" id="zhifuip"></span> 
+	                  <span class="text">支付方式：请识别下图二维码联系付款。<br />
+	                  	付款备注信息(<span style="color:red">付款时请务必写上该编码</span>)：
+	                  	{$order['rand']}
+	                  </span> 
+	                  	<a id="copyRand" href="javascript:void(0);" data-clipboard-action="copy" data-clipboard-text="{$order['rand']}">点击复制</a>
+	                  <a href="javascript:void(0)" title="修改商品列表" class="link">必选</a>
+	                  <em class="qxz" id="emzhifu">请选择支付方式</em> 
+                    </div>
+                    <ul class="nav nav-list-sidenav" id="zhifu68" style="display:block; border-bottom:none;">
+                     <img src="__STATIC__/images/wx2.jpg" width="50%" />
+                    </ul>
+                  <else />
+                  </if> -->
+                  	<div class="title" id="zhifutitle" style="border-bottom:1px solid #eeeeee;font-size:12px;">
+	                  <span class="i-icon-arrow-down i-icon-arrow-up" id="zhifuip"></span> 
+	                  <!-- <span class="text">支付方式：请使用转账方式支付。<br />
+	                  	付款备注信息(<span style="color:red">转账方式付款时请务必写上该编码</span>)：
+	                  	{$order['rand']}
+	                  </span> 
+	                  	<a id="copyRand" href="javascript:void(0);" data-clipboard-action="copy" data-clipboard-text="{$order['rand']}">点击复制</a> -->
+	                  <!-- <a href="javascript:void(0)" title="修改商品列表" class="link">必选</a>
+	                  <em class="qxz" id="emzhifu">请选择支付方式</em>  -->
+                    </div>
+                    <ul class="nav nav-list-sidenav" id="zhifu68" style="display:block; border-bottom:none;">
+	                    <!-- <foreach name="paymentList" item="v"  key="k"> 
+	                    <li class="clearfix" name="payment_name">
+	                      <label>
+	                          <input type="radio"   value="pay_code={$v['code']}" class="c_checkbox_t" name="pay_radio" />
+	                          <div class="fl shipping_title">
+		                          <img src="/plugins/{$v['type']}/{$v['code']}/{$v['icon']}" onClick="change_pay(this);" width="110" height="40" />
+	                          </div>
+	                      </label>
+	                    </li>
+	                   </foreach> -->
+	                   <li class="clearfix" name="payment_name">
+	                   <br>
+	                   		<input type="radio"   value="TransferPay" id="transferCode" class="c_checkbox_t" name="pay_radio" />
+	                   		<div class="fl shipping_title">
+		                          <img src="__STATIC__/images/pay/zf.png" onClick="change_pay(this);" width="110" height="40" />
+		                          <span>该付款方式可获得商城10莱特股哟！</span>
+	                        </div>
+                     	</li>
+                    </ul>
+                  
+                  
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="pay-btn">
+			<input type="hidden" name="order_id" value="{$order['order_id']}" />
+		    <a href="javascript:void(0);" onClick="pay()" class="sub-btn btnRadius">去支付</a>
+		</div>
+		  
+		<div id="tip" style="display:none;">
+			<div style="text-align:right">
+				<img src="__STATIC__/images/zhifubaojiantou.png" />
+			</div>
+			<p style="text-align:center;">选择右上角"浏览器打开"</p>
+			<div style="position: relative;text-align:center;overflow:hidden;vertical-align:middle;margin:0 auto;">
+				
+				<img src="__STATIC__/images/zhifubaotishi.png" />
+			</div>
+			<br >
+			<br >
+			<center>
+				<a href="javascript:void(0);" onclick="layer.closeAll();" class="sub-btn btnRadius" style="width: 40%;">关闭</a>
+			</center>
+		</div>
+
+		
+		<div id="TransferPay" style="display:none;" >
+			<div style="position: Relative;text-align:center;overflow:hidden;vertical-align:middle;margin:0 auto;font-size:12px;padding:0 25px" >
+				<!-- <span style="font-size:28px"> 转账支付：</span><br> -->
+				<br><br>
+              	<!-- 支付宝账户：13530238026 <a id="copyZFB" href="javascript:void(0);" data-clipboard-action="copy" data-clipboard-text="13530238026">点击复制</a> <br />
+               	收款人：戴甲洪 <a id="copyZFBXM" href="javascript:void(0);" data-clipboard-action="copy" data-clipboard-text="戴甲洪">点击复制</a> <br /> -->
+             	
+             	<p style="width:100%;padding-bottom:15px;text-align: left">请在支付备注一栏填写支付码：{$order['rand']}（切记），便于客服统计送莱特股，及时处理订单排队返现。
+<!--              	<a id="copyRand" href="javascript:void(0);" data-clipboard-action="copy" data-clipboard-text="{$order['rand']}">点击复制支付码</a>
+ -->             	</p>
+              	<p style="padding-bottom:15px;text-align: left">
+              		付款方式一：支付宝 <br>
+              		账号：13530238026<br>
+              		联系人：戴甲洪
+              	</p>
+              	<p style="padding-bottom:15px;text-align: left">
+              		付款方式二：网银转账<br>
+              		账号：6029 0710 3435 3032<br>
+              		开户名：戴甲洪<br>
+              		开户行：深圳平安银行平湖支行银行<br>
+              	</p>
+<p style="text-align: left">
+	如有疑问，直接添加微信号（18692248010）或识别扫描二维码，联系客服MM。
+	<a id="copyWXH" href="javascript:void(0);" data-clipboard-action="copy" data-clipboard-text="18692248010">点击复制微信号</a>
+</p>
+				<br>
+               	<img src="__STATIC__/images/weixin.jpg" width="30%" />
+               	<br>
+				支付成功后，可获得10莱特股。<br >
+				您有任何疑问，我们会在第一时间给您回复！
+            </div>
+            <br>
+			<center>
+				<a href="javascript:void(0);" onclick="layer.closeAll();" class="sub-btn btnRadius" style="width: 20%;">关闭</a>
+			</center>
+		</div>
+		
+</div>
+</form>
+<script>
+	var copyRand = new Clipboard('#copyRand');
+	
+	copyRand.on('success', function(e) {
+		layer.open({content: "复制成功！",time: 0.5});
+		console.log(e);
+	});
+	copyRand.on('error', function(e) {
+		layer.open({content: "您的浏览器不支持此功能！",time: 0.5});
+		console.log(e);
+	});
+	var copyZFB = new Clipboard('#copyZFB');
+	copyZFB.on('success', function(e) {
+		layer.open({content: "复制成功！",time: 0.5});
+		console.log(e);
+	});
+	copyZFB.on('error', function(e) {
+		layer.open({content: "您的浏览器不支持此功能！",time: 1});
+	    console.log(e);
+	});
+	
+	var copyWXH = new Clipboard('#copyWXH');
+	copyWXH.on('success', function(e) {
+		layer.open({content: "复制成功！",time: 0.5});
+		console.log(e);
+	});
+	copyWXH.on('error', function(e) {
+		layer.open({content: "您的浏览器不支持此功能！",time: 1});
+	    console.log(e);
+	});
+	
+    $(document).ready(function(){
+        $("input[name='pay_radio']").first().trigger('click');
+    });
+    // 切换支付方式
+    function change_pay(obj)
+    {
+        $(obj).parent().siblings('input[name="pay_radio"]').trigger('click');
+    }
+
+    function pay(){
+    	//iframe层
+    	<if condition="strstr($_SERVER['HTTP_USER_AGENT'],'MicroMessenger')" >
+	    	
+	    	if($("input[name='pay_radio']:checked").val()=="TransferPay"){
+	    		layer.open({
+				    type: 1,
+				    content: $("#TransferPay").html(),
+				    style: 'position:fixed; left:0; top:0; width:100%; height:100%; border:none;'
+				});
+	    	}else{
+	    		layer.open({
+				    type: 1,
+				    content: $("#tip").html(),
+				    style: 'position:fixed; left:0; top:0; width:100%; height:100%; border:none;'
+				});
+	    	}
+	   	<else />
+    	
+    	if($("input[name='pay_radio']:checked").val()=="TransferPay"){
+    		layer.open({
+			    type: 1,
+			    content: $("#TransferPay").html(),
+			    style: 'position:fixed; left:0; top:0; width:100%; height:100%; border:none;'
+			});
+    	}else{
+    		
+    		$('#cart4_form').submit();
+            return;
+    	}
+    	</if>
+    	
+        //微信JS支付
+    }
+</script> 
+<include file="Public/footer"/>
+</div>
+<include file="Public/footer_nav"/>
+</body>
+</html>

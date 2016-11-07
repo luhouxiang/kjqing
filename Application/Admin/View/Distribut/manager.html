@@ -1,0 +1,100 @@
+<include file="Public/min-header"/>
+<title>Bootstrap树形菜单JS代码特效 - JS代码网</title>
+<!--图标样式-->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/bootstrap/css/bootstrap.min.css" />
+<!--主要样式-->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/bootstrap/css/style.css" />
+
+<script type="text/javascript" src="__PUBLIC__/js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/Validform_v5.3.2.js"></script>
+<script type="text/javascript" src="__PUBLIC__/js/layer/layer-min.js"></script>
+<style type="text/css">
+    [class^="icon-"], [class*=" icon-"] {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        margin-top: 1px;
+        line-height: 14px;
+        vertical-align: text-top;
+        background-image: url("__PUBLIC__/bootstrap//img/glyphicons-halflings.png");
+        background-position: 14px 14px;
+        background-repeat: no-repeat;
+    }
+    .icon-folder-open {
+        width: 16px;
+        background-position: -408px -120px;
+    }
+    .icon-minus-sign {
+        background-position: -24px -96px;
+    }
+    .icon-plus-sign {
+        background-position: 0 -96px;
+    }
+    .icon-leaf {
+        background-position: -48px -120px;
+    }
+    .tree li:last-child::before {
+        height: 25px;
+    }
+
+</style>
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <nav class="navbar navbar-default">
+                            <div class="collapse navbar-collapse">
+                                <form method="post" role="search" class="navbar-form form-inline" id="firm-form" action="{:U('Distribut/adduser')}">
+                                    <div class="form-group">
+                                        <input type="text" placeholder="添加管理者" name="user_id" id="user_id"  class="form-control" datatype="*" ajaxurl="{:U('Distribut/ajaxuser')}"  nullmsg="请输入用户名！" errormsg="请用邮箱或手机号码注册！">
+                                        <input type="text" placeholder="提成比例" name="scale" id="roate"  class="form-control" onchange="this.value = this.value / 100" datatype="*" nullmsg="请输入提成比例！" >%
+                                    </div>
+                                    <button class="btn btn-info" type="submit"><i class="fa fa-search"></i> 添加</button>
+                                </form>
+                            </div>
+                        </nav>
+                    </div>
+                    <div class="box-body">
+                        <div class="tree well">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>团队管理</th>
+                                    <th>提成比例</th>
+                                    <th>总金额</th>
+                                    <th>团队详情</th>
+                                    <th>操作</th>
+                                </tr>
+
+                                </thead>
+                                <tbody>
+                                <foreach name="users" item="v" key="k">
+                                    <tr role="row" align="center">
+                                        <td>{$v.mobile}</td>
+                                        <td>{$v.scale}</td>
+                                        <td>{$v.paytotal}</td>
+                                        <td><a href="{:U('Distribut/managerlist',array('user_id'=>$v['user_id']))}">分销详情</a></td>
+                                        <td><a href="{:U('Distribut/managerdel',array('manager_id'=>$v['manager_id']))}">删除</a></td>
+
+                                    </tr>
+                                    </foreach>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    $("#firm-form").Validform();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<include file="Public/header"/>
+<body>      
+<div id="tbh5v0">
+<div class="user_com">
+<include file="Public/uer_topnav"/>
+
+<div class="endorse_hend">
+	<p>排队信息</p>
+</div>
+
+<div class="Wallet">
+	<div class="cash_num">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" id="ajax_return">
+			<tr>
+				<th>名次</th>
+				<th>用户名</th>                
+				<th>兑换积分</th>
+				<th>加入时间</th>
+			</tr> 
+           <volist name="queue_lst" id="v" key="k"   offset="0" length='10'> 
+	            <tr>
+	                <td>{$k}</td>
+	                <td>
+	                	<if condition="!empty($v['color'])">
+	                		<span style="color:red">{$v['nickname']}</span>
+	                	<else />
+	                		{$v['nickname']}
+	                	</if>
+	                </td>
+	                <td>{$v['receive_amount']}</td>
+	                <td>{$v['join_time']|date='Y-m-d H:i:s',###}</td>
+	            </tr>
+            </volist>   
+            <if condition="!empty($user_queue_lst)" >
+	            
+	            <volist name="user_queue_lst" id="v" key="k" > 
+		            <if condition="$v['index'] gt 10">
+	            		<tr>
+	            			<td>{$v['index']}</td>
+			            	<td>{$v['nickname']}</td>
+			            	<td>{$v['receive_amount']}</td>
+			            	<td>{$v['join_time']|date='Y-m-d H:i:s',###}</td>
+	            		</tr>
+	            	</if>     
+	            </volist>
+	        </if>
+            
+		</table>
+	    <!-- <notempty name="list">
+	          <p style="text-align: center;" id="getmore"><a href="javascript:void(0)" onClick="ajax_sourch_submit()">点击加载更多</a></p>        
+        </notempty>  -->           
+	</div>
+</div>
+
+
+</div>
+<include file="Public/footer"/>
+</div>
+<include file="Public/footer_nav"/>
+</body>
+</html>

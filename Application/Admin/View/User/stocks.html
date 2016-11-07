@@ -1,0 +1,88 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+    <include file="Public/breadcrumb"/>
+    <section class="content">
+        <!-- Main content -->
+        <div class="container-fluid">
+            <div class="pull-right">
+
+                <a href="javascript:history.go(-1)" data-toggle="tooltip" title="" class="btn btn-default" data-original-title="返回"><i class="fa fa-reply"></i></a>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-list"></i>股票奖励</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tab_tongyong" data-toggle="tab">奖励</a></li>
+                    </ul>
+                    <!--表单数据-->
+                    <form method="post" id="editForm" action="{:U('poststock')}">
+                        <!--通用信息-->
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab_tongyong">
+
+                                <table class="table table-bordered">
+                                    <tbody>
+                                    <tr>
+                                        <td>资金池金额</td>
+                                        <td>
+                                            {$system_amount['amount']}
+                                            <input type="hidden" name="system_amount" value="{$system_amount['amount']}">
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>总发行股份</td>
+                                        <td>
+                                            {$stock_amount}
+                                            <input type="hidden" name="stock_amount" value="{$stock_amount}">
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>每股应发</td>
+                                        <td>
+                                            {$one}
+                                            <input type="hidden" name="one" value="{$one}">
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>总共奖励金额</td>
+                                        <td>
+                                            {$total}
+                                            <input type="hidden" name="total" value="{$total}">
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>剩余金额</td>
+                                        <td>
+                                            {$rem}
+                                            <input type="hidden" name="rem" value="{$rem}">
+
+                                        </td>
+                                    </tr>
+
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="pull-right">
+                            <input type="hidden" name="id" value="{$data.id}">
+
+                                <button class="btn btn-primary" type="submit">股票奖励扮发</button>
+
+
+                        </div>
+                    </form><!--表单数据-->
+                </div>
+            </div>
+        </div>    <!-- /.content -->
+    </section>
+</div>
+</body>
+</html>

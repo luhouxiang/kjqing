@@ -1,0 +1,44 @@
+<include file="Public/header"/>
+<body>      
+<div id="tbh5v0">
+<div class="user_com">
+<include file="Public/uer_topnav"/>
+
+<div class="endorse_hend">
+	<p>我的积分兑换记录</p>
+</div>
+
+<div class="Wallet">
+	<div class="cash_num">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" id="ajax_return">
+           <tr>
+				<th>序号</th>
+				<th>用户名</th>                
+				<th>兑换积分</th>
+				<th>加入时间</th>
+			</tr> 
+           <volist name="queue_lst" id="v" key="k"   offset="0" length='10'> 
+	            <tr>
+	                <td>{$k}</td>
+	                <td>
+	                	{$v['nickname']}
+	                </td>
+	                <td>{$v['receive_amount']}</td>
+	                <td>{$v['receive_time']|date='Y-m-d H:i:s',###}</td>
+	            </tr>
+            </volist>                                     
+		</table>
+	    <notempty name="list">
+	          <p style="text-align: center;" id="getmore"><a href="javascript:void(0)" onClick="ajax_sourch_submit()">点击加载更多</a></p>        
+        </notempty>            
+	</div>
+</div>
+
+
+</div>
+<include file="Public/footer"/>
+</div>
+<include file="Public/footer_nav"/>
+</body>
+
+</html>

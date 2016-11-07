@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+<title>收货地址-{$tpshop_config['shop_info_store_title']}</title>
+<meta http-equiv="keywords" content="{$tpshop_config['shop_info_store_keyword']}" />
+<meta name="description" content="{$tpshop_config['shop_info_store_desc']}" />
+</head>
+<body> 
+<!-- 头部-s -->
+<include file="User/header" />
+<!-- 头部-e -->  
+<script src="__PUBLIC__/js/layer/layer.js"></script><!-- 弹窗js 参考文档 http://layer.layui.com/-->
+
+<div class="wrap">
+  <div class="bread_crumbs"> <a href="{:U('Home/User/index')}" class="crumbs_font">我的TPshop</a>&gt;<span class="color">我的排队</span></div>
+  <!--菜单--> 
+  <include file="User/menu" /> 
+  <!--菜单-->     
+  <!--侧边导航栏结束-->
+  <div class="col_main" id="J_address">
+    <div class="main address_management"> 
+      <!-- themes star -->
+      <div class="themes_title">
+        <h3>我的排队</h3>
+		<h2><a onclick="myQueue()" class="co-red"><span>我的兑换记录</span></a></h2>
+      </div>
+      <!-- themes end --> 
+      <div class="address-adc">
+        <div class="aa-title fixed">
+          <ul>
+            <li class="th-01">名次</li>
+            <li class="th-02">用户名</li>
+            <li class="th-03">兑换积分</li>
+            <li class="th-05">加入时间</li>
+          </ul>
+        </div>
+        <!-- 地址列表go -->
+        <div id="aa-list" class="aa-list">
+         <volist name="queue_lst" id="v" key="k" offset="0" length='10'>
+          <ul class="fixed list-on">
+            <li class="td-01" data-add="username">{$k}</li>
+            <li class="td-02"> 
+            	<if condition="!empty($v['color'])">
+               		<span style="color:red">{$v['nickname']}</span>
+               	<else />
+               		{$v['nickname']}
+               	</if>
+            </li>
+            <li class="td-03">
+              <p><span data-add="usercell">{$v['receive_amount']}</span></p>              
+            </li>
+            <li class="td-05">
+            	{$v['join_time']|date='Y-m-d',###}
+            </li>
+          </ul>
+        </volist>  
+        <if condition="!empty($user_queue_lst)" >
+	            
+	            <volist name="user_queue_lst" id="v" key="k" > 
+		            <if condition="$v['index'] gt 10">
+		            	<ul class="fixed list-on">
+				            <li class="td-01" data-add="username">{$k}</li>
+				            <li class="td-02"> 
+				            	<if condition="!empty($v['color'])">
+				               		<span style="color:red">{$v['nickname']}</span>
+				               	<else />
+				               		{$v['nickname']}
+				               	</if>
+				            </li>
+				            <li class="td-03">
+				              <p><span data-add="usercell">{$v['receive_amount']}</span></p>              
+				            </li>
+				            <li class="td-05">
+				            	{$v['join_time']|date='Y-m-d',###}
+				            </li>
+				          </ul>
+		            </if>
+		        </volist>
+		</if>
+        </div>         
+      </div>
+      
+      <!-- Address Management end --> 
+    </div>
+  </div>
+</div>
+ 
+<div style="clear: both;"></div>
+<include file="User/footer" />
+</body>
+<script>
+ 
+    /**
+     * 新增修改收货地址
+     * id 为零 则为新增, 否则是修改
+     *  使用 公共的 layer 弹窗插件  参考官方手册 http://layer.layui.com/
+     */
+    function myQueue()
+    {
+        var url = "/index.php?m=Home&c=User&a=integral_record&scene=1&call_back=call_back_fun";
+        layer.open({
+            type: 2,
+            title: '我的兑换记录',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['880px', '580px'],
+            content: url,
+        });
+    }
+    // 添加修改收货地址回调函数
+    function call_back_fun(v){
+        layer.closeAll(); // 关闭窗口
+        location.href = location.href;
+    }
+</script>
+</html>

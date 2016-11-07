@@ -1,0 +1,100 @@
+<include file="Public/min-header"/>
+<div class="wrapper">
+    <!-- Content Header (Page header) -->
+   <include file="Public/breadcrumb"/>
+    <section class="content">
+    <!-- Main content -->
+    <!--<div class="container-fluid">-->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-list"></i> 股票奖励信息</h3>
+            </div>
+            <div class="panel-body">
+	            <div class="navbar navbar-default">
+	            <form action="" id="getStockForm" class="navbar-form form-inline" method="post" >
+	            	<div class="form-group">
+                        <label class="control-label" for="input-mobile">发放股票人数：</label>
+                        <div class="input-group">
+                            {$count}人 &nbsp;&nbsp;&nbsp;
+                            <input type="hidden" id="count" value="{$count}">
+                        </div>
+                    </div>
+	            	<div class="form-group">
+                        <label class="control-label" for="input-mobile">每人领取数量：</label>
+                        <div class="input-group">
+                            <input type="text" name="stockCount" value="" placeholder="每人领取数量" id="input-stockCount" class="form-control"
+                            	onpaste="this.value=this.value.replace(/[^\d.]/g,'')" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'');sumStock(this);" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="input-mobile">股票发放数量数量：</label>
+                        <div class="input-group">
+                            <input type="text" id="stockSum" readOnly class="form-control" />
+                        </div>
+                    </div>
+                    <button type="submit" onclick="getStock();" id="button-filter" class="btn btn-primary pull-right">发放</button>
+				</form>
+				</div>
+            </div>
+             <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <td class="text-right">
+                            	会员id
+                        </td>
+                        <td class="text-left">
+                            	会员昵称
+                        </td>
+                        <td class="text-left">
+                            	订单总额
+                        </td>
+                        <td class="text-left">
+                            	用户股票数
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    	<volist name="users" id="list" >
+                    	<tr>
+	                        <td class="text-right">
+	                            {$list.user_id}
+	                        </td>
+	                        <td class="text-left">
+	                            {$list.nickname}
+	                        </td>
+	                        <td class="text-left">
+	                            {$list.order_amount}
+	                        </td>
+	                        <td class="text-left">
+	                            {$list.stock*1}
+	                        </td>
+	                    </tr>
+                    	</volist>
+                    </tbody>
+                </table>
+             </div>
+        </div>
+ 	  </div> 
+    </div>    <!-- /.content -->
+   </section>
+</div>
+<script>
+	function sumStock(obj){
+		var value = obj.value;
+		if(value){
+			var count = $("#count").val();
+			$("#stockSum").val(value*count);
+		}
+	}
+	
+	function getStock(){
+		$("#getStockForm").submit();
+	}
+	
+</script>
+
+</body>
+</html>
